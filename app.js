@@ -46,13 +46,10 @@ app.use('/cardiac', cardiacSystem);
 app.use(function(req, res, next) {
   next(createError(404));
 });
-
-//   // render the error page
-//   res.status(err.status || 500);
-//   res.render('error');
-// });
-
-
+app.use(function(req, res, next) {
+  res.status(err.status || 500);
+  res.render('error');
+});
 
 app.listen(process.env.PORT);
 

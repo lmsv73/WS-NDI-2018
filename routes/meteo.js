@@ -19,6 +19,9 @@ router.get('/humidity/:nb', humidity);
 router.get('/luminosity', luminosity);
 router.get('/luminosity/:nb', luminosity);
 
+router.get('/altitude', altitude);
+router.get('/altitude/:nb', altitude);
+
 function temp(req, res, next){
     MongoClient.connect(url, (err, client) => {
         let db = client.db('night_2018');
@@ -63,6 +66,16 @@ function luminosity(req, res, next){
     MongoClient.connect(url, (err, client) => {
         let db = client.db('night_2018');
         db.collection('luminosity').find({}).sort({date: -1}).limit(req.params.nb ? parseInt(req.params.nb, 10) : 1).toArray((err, result) => {
+            client.close();
+            res.json(result);
+        });
+    })
+}
+
+function altitude(req, res, next){
+    MongoClient.connect(url, (err, client) => {
+        let db = client.db('night_2018');
+        db.collection('altitude').find({}).sort({date: -1}).limit(req.params.nb ? parseInt(req.params.nb, 10) : 1).toArray((err, result) => {
             client.close();
             res.json(result);
         });

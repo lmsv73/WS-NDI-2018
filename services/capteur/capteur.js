@@ -43,7 +43,7 @@ module.exports = class Capteur{
           let g=9.81; /*constante de gravitation*/
           let cp=1006; /*capcites calorifique de l'air*/
           let z=-Math.log(pression/p)*cp*temperature*2/7/g;
-          return((z).toFixed(1))
+          return(parseFloat((z).toFixed(1)));
         }
         this.updateCapteurs = () => {
             let newTemp = {

@@ -38,6 +38,13 @@ module.exports = class Capteur{
             });
             client.close();
         })
+        this.calcAltitude = function(pression/* en hpascal*/,temperature /* en kelvin */){
+          let p=1000;
+          let g=9.81; /*constante de gravitation*/
+          let cp=1006; /*capcites calorifique de l'air*/
+          let z=-Math.log(pression/p)*cp*temperature*2/7/g;
+          return(z)
+        }
         this.updateCapteurs = () => {
             let newTemp = {
                 date: Date.now(),
@@ -58,6 +65,10 @@ module.exports = class Capteur{
             let newLuminosty = {
                 date: Date.now(),
                 luminosity: data.luminosity[this.iLuminosity]
+            }
+            let newAltitude = {
+                date: Date.now(),
+                altitude: this.calcAltitude(newPressure.pressure, newTemp.temp)
             }
             if(this.iTemp === data.temp.length-1){
                 this.iTemp = 0;
@@ -91,7 +102,9 @@ module.exports = class Capteur{
                         db.collection('pressure').insertOne(newPressure).then(() => {
                             db.collection('humidity').insertOne(newHumidity).then(() => {
                                 db.collection('luminosity').insertOne(newLuminosty).then(() => {
-                                    client.close();
+                                    db.collection('altitude').insertOne(newAltitude).then(() => {
+                                        client.close();
+                                    })
                                 })
                             })
                         })
@@ -102,6 +115,4 @@ module.exports = class Capteur{
         }
         setInterval(this.updateCapteurs, 30000);
     }
-
-    
 }

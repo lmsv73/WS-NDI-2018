@@ -18,7 +18,7 @@ router.post('/', function(req, res, next){
     MongoClient.connect(url, (err, client) => {
         let db = client.db('night_2018');
         db.collection('humidity').insertOne(insert).then(() => {
-            res.send(''+note);
+            res.send(note.toFixed(2));
         })
     });
 

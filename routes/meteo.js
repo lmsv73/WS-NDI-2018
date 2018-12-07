@@ -5,6 +5,7 @@ var MongoClient = require('mongodb').MongoClient;
 var url = 'mongodb://localhost:27017';
 
 router.get('/temp', temp);
+router.post('/temp', temp);
 router.get('/temp/:nb', temp);
 
 router.get('/wind', wind);

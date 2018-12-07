@@ -35,7 +35,7 @@ var insertDocuments = function(db, callback) {
 
 router.get('/store', insertDoc);
 router.get('/:nb', getAll);
-router.get('/', getAllBis);
+router.get('/', getAll);
 
 
 function getAll(req, res, next) {
@@ -43,25 +43,11 @@ function getAll(req, res, next) {
         console.log("Connected successfully to server");
         var db = client.db(dbName);
         var collection = db.collection('logbook');
-        collection.find({}).sort({date: -1}).limit(parseInt(req.params.nb, 10)).toArray(function(err, doc) {
-            res.json(doc);
-            // console.log(doc);
+        collection.find({}).sort({date: -1}).limit(req.params.nb ? parseInt(req.params.nb, 10) : 1).toArray(function(err, doc) {
             client.close();
+            res.json(doc);
         });
         
-    });
-}
-
-function getAllBis(req, res, next) {
-    MongoClient.connect(url, function(err, client) {
-        console.log("Connected successfully to server");
-        var db = client.db(dbName);
-        var collection = db.collection('logbook');
-        collection.find({}).sort({date: -1}).limit(1).toArray(function(err, doc) {
-            res.json(doc);
-            // console.log(doc);
-            client.close();
-        });
     });
 }
 

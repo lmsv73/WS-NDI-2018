@@ -29,17 +29,15 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/meteo', meteoRoute);
+app.use('/logbook', logbook);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
 });
-
-//   // render the error page
-//   res.status(err.status || 500);
-//   res.render('error');
-// });
-
-app.use('/logbook', logbook);
+app.use(function(req, res, next) {
+  res.status(err.status || 500);
+  res.render('error');
+});
 
 app.listen(process.env.PORT);
 

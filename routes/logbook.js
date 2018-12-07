@@ -17,24 +17,52 @@ const dbName = 'night_2018';
 //     });
 // });
 
-var date = Date.now();
-// INSERER UN DOCUMENT DANS LA BDD (TEST)
-var insertDocuments = function(db, callback) {
-    // Get the documents collection
-    var collection = db.collection('logbook');
-    // Insert some documents
-    collection.insert({
-        title: req.body.title,
-        description: req.body.desc,
-        user: 'Explorateur',
-        date: date,
-    });
-};
 
-router.post('/store', insertDoc);
+
+// function insertDoc(req, res, next) {
+//     MongoClient.connect(url, function(err, client) {
+//         console.log("Connected successfully to server");
+//         var db = client.db(dbName);
+//         insertDocuments(db, function() {
+//             client.close();
+//         });
+//     });
+//     res.send("hello world");
+// }
+// var insertDocuments = function(db, callback) {
+//     // Get the documents collection
+//     var collection = db.collection('logbook');
+//     // Insert some documents
+//     collection.insert({
+//         title: req.body.title,
+//         description: req.body.desc,
+//         user: 'Explorateur',
+//         date: date,
+//     });
+// };
+
+router.post('/store', insertDocu);
 router.get('/:nb', getAll);
 router.get('/', getAll);
 
+var date = Date.now();
+// INSERER UN DOCUMENT DANS LA BDD (TEST)
+function insertDocu(req, res, next) {
+    MongoClient.connect(url, function(err, client) {
+        console.log("Connected successfully to server");
+        var db = client.db(dbName);
+        var collection = db.collection('logbook');
+        // Insert some documents
+        collection.insert({
+            title: req.body.title,
+            description: req.body.desc,
+            user: 'Explorateur',
+            date: date,
+        });
+        client.close();
+    });
+    res.send("Done");
+}
 
 function getAll(req, res, next) {
     MongoClient.connect(url, function(err, client) {
@@ -47,17 +75,6 @@ function getAll(req, res, next) {
         });
         
     });
-}
-
-function insertDoc(req, res, next) {
-    MongoClient.connect(url, function(err, client) {
-        console.log("Connected successfully to server");
-        var db = client.db(dbName);
-        insertDocuments(db, function() {
-            client.close();
-        });
-    });
-    res.send("hello world");
 }
 
 module.exports = router;

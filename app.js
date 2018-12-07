@@ -5,6 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var logbook = require('./routes/logbook');
 var cardiacSystem = require('./routes/cardiacSystem');
+var resources = require('./routes/resources');
 // var mongoose = require('mongoose');
 var cors = require('cors');
 
@@ -42,6 +43,7 @@ app.use('/cardiac', function(req, res, next){
   next();
 });
 app.use('/cardiac', cardiacSystem);
+app.use('/resources', resources);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

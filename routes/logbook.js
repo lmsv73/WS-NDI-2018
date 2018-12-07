@@ -1,7 +1,5 @@
 var express = require('express');
-var mongoose = require('mongoose');
 var router = express.Router();
-var Schema = mongoose.Schema;
 var MongoClient = require('mongodb').MongoClient;
 
 // Connection URL

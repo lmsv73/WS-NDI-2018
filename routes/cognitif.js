@@ -5,7 +5,7 @@ var MongoClient = require('mongodb').MongoClient;
 var url = 'mongodb://localhost:27017';
 
 router.post('/', function(req, res, next){
-    let note=(req.body.nbTouch-req.body.nbEchec)*5/req.body.duration;
+    let note=(req.body.nbTouch-req.body.nbEchec)*5/(req.body.duration/1000);
     console.log(req.body);
     note=Math.min(20,note);
     note=Math.max(0,note);

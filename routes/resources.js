@@ -9,7 +9,7 @@ const url = 'mongodb://localhost:27017';
 const dbName = 'night_2018';
 
 router.get('/', allResources);
-router.get('/modify', modify);
+router.post('/modify', modify);
 
 var date = Date.now();
 // INSERER UN DOCUMENT DANS LA BDD (TEST)

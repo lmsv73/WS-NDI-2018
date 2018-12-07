@@ -5,7 +5,7 @@ var MongoClient = require('mongodb').MongoClient;
 var url = 'mongodb://localhost:27017';
 
 router.get('/temp', temp);
-router.post('/temp', temp);
+router.post('/temp/webhook', tempwebhook);
 router.get('/temp/:nb', temp);
 
 router.get('/wind', wind);
@@ -29,6 +29,18 @@ function temp(req, res, next){
         db.collection('temp').find({}).sort({date: -1}).limit(req.params.nb ? parseInt(req.params.nb, 10) : 1).toArray((err, result) => {
             client.close();
             res.json(result);
+        });
+    })
+}
+
+function tempwebhook(req, res, next){
+    MongoClient.connect(url, (err, client) => {
+        let db = client.db('night_2018');
+        db.collection('temp').find({}).sort({date: -1}).limit(1).toArray((err, result) => {
+            client.close();
+            res.json({
+                "fulfillmentText": ""+result.temp
+            });
         });
     })
 }

@@ -58,8 +58,9 @@ function insertDocu(req, res, next) {
             description: req.body.desc,
             user: 'Explorateur',
             date: date,
-        });
-        client.close();
+        }).then(() => {
+            client.close();
+        })
     });
     res.send("Done");
 }

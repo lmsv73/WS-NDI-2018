@@ -1,39 +1,71 @@
 var express = require('express');
 var router = express.Router();
-var weather = require('../weatherapi.json');
-var axios = require('axios');
+var MongoClient = require('mongodb').MongoClient;
 
-router.get('/', meteo);
-router.get('/:lat', meteo);
-router.get('/:lat/:long', meteo);
+var url = 'mongodb://localhost:27017';
 
-function meteo(req, res, next){
-    let coord = {
-        lat: 0,
-        long: 0
-    };
-    if(req.params.lat && req.params.long){
-        coord.lat = req.params.lat;
-        coord.long = req.params.long;
-    }else{
-        coord.lat = weather.defaultLat;
-        coord.long = weather.defaultLong;
-    }
-    axios.get('https://api.openweathermap.org/data/2.5/weather', {
-        params: {
-            lat: coord.lat,
-            lon: coord.long,
-            appid: weather.appid
-        }
-    }).then((response) => {
-        res.json({
-            temp: response.data.main.temp,
-            pressure: response.data.main.pressure,
-            humidity: response.data.main.humidity
+router.get('/temp', temp);
+router.get('/temp/:nb', temp);
+
+router.get('/wind', wind);
+router.get('/wind/:nb', wind);
+
+router.get('/pressure', pressure);
+router.get('/pressure/:nb', pressure);
+
+router.get('/humidity', humidity);
+router.get('/humidity/:nb', humidity);
+
+router.get('/luminosity', luminosity);
+router.get('/luminosity/:nb', luminosity);
+
+function temp(req, res, next){
+    MongoClient.connect(url, (err, client) => {
+        let db = client.db('night_2018');
+        db.collection('temp').find({}).sort({date: -1}).limit(req.params.nb ? parseInt(req.params.nb, 10) : 1).toArray((err, result) => {
+            client.close();
+            res.json(result);
         });
-    }).catch((error) => {
-        console.log(error);
-        res.status(500).send('Erreur lors de la récupération de la météo');
+    })
+}
+
+function wind(req, res, next){
+    MongoClient.connect(url, (err, client) => {
+        let db = client.db('night_2018');
+        db.collection('wind').find({}).sort({date: -1}).limit(req.params.nb ? parseInt(req.params.nb, 10) : 1).toArray((err, result) => {
+            client.close();
+            res.json(result);
+        });
+    })
+}
+
+function pressure(req, res, next){
+    MongoClient.connect(url, (err, client) => {
+        let db = client.db('night_2018');
+        db.collection('pressure').find({}).sort({date: -1}).limit(req.params.nb ? parseInt(req.params.nb, 10) : 1).toArray((err, result) => {
+            client.close();
+            res.json(result);
+        });
+    })
+}
+
+function humidity(req, res, next){
+    MongoClient.connect(url, (err, client) => {
+        let db = client.db('night_2018');
+        db.collection('humidity').find({}).sort({date: -1}).limit(req.params.nb ? parseInt(req.params.nb, 10) : 1).toArray((err, result) => {
+            client.close();
+            res.json(result);
+        });
+    })
+}
+
+function luminosity(req, res, next){
+    MongoClient.connect(url, (err, client) => {
+        let db = client.db('night_2018');
+        db.collection('luminosity').find({}).sort({date: -1}).limit(req.params.nb ? parseInt(req.params.nb, 10) : 1).toArray((err, result) => {
+            client.close();
+            res.json(result);
+        });
     })
 }
 

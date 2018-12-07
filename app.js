@@ -5,7 +5,13 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors');
 
+var Capteur = require('./services/capteur/capteur');
+
+var url = 'mongodb://localhost:27017';
+
 var app = express();
+
+var capteur = new Capteur(url);
 
 var meteoRoute = require('./routes/meteo');
 

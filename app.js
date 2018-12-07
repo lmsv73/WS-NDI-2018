@@ -3,7 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var logbook = require('./routes/logbook');
+
 var cardiacSystem = require('./routes/cardiacSystem');
 // var mongoose = require('mongoose');
 var cors = require('cors');
@@ -16,7 +16,9 @@ var app = express();
 
 var capteur = new Capteur(url);
 
+var logbookRoute = require('./routes/logbook');
 var meteoRoute = require('./routes/meteo');
+var cogniftifRoute = require('./routes/cognitif');
 
 var sport = false;
 
@@ -36,7 +38,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/meteo', meteoRoute);
-app.use('/logbook', logbook);
+app.use('/logbook', logbookRoute);
+app.use('/cognitif', cogniftifRoute);
 app.use('/cardiac', function(req, res, next){
   res.locals.sport = sport;
   next();

@@ -22,7 +22,7 @@ var sport = false;
 
 setInterval(() => {
   sport = !sport;
-}, 3000);
+}, 30000);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

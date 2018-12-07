@@ -58,8 +58,9 @@ function insertDocu(req, res, next) {
             description: req.body.desc,
             user: 'Explorateur',
             date: date,
-        });
-        client.close();
+        }).then(() => {
+            client.close();
+        })
     });
     res.send("Done");
 }
@@ -69,10 +70,17 @@ function getAll(req, res, next) {
         console.log("Connected successfully to server");
         var db = client.db(dbName);
         var collection = db.collection('logbook');
-        collection.find({}).sort({date: -1}).limit(req.params.nb ? parseInt(req.params.nb, 10) : 1).toArray(function(err, doc) {
-            client.close();
-            res.json(doc);
-        });
+        if(!req.params.nb){
+            collection.find({}).sort({date: -1}).toArray(function(err, doc) {
+                client.close();
+                res.json(doc);
+            });
+        }else{
+            collection.find({}).sort({date: -1}).limit(req.params.nb ? parseInt(req.params.nb, 10) : 1).toArray(function(err, doc) {
+                client.close();
+                res.json(doc);
+            });
+        }
         
     });
 }

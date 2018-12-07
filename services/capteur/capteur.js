@@ -39,11 +39,11 @@ module.exports = class Capteur{
             client.close();
         })
         this.calcAltitude = function(pression/* en hpascal*/,temperature /* en kelvin */){
-          let p=1000;
+          let p=1013;
           let g=9.81; /*constante de gravitation*/
           let cp=1006; /*capcites calorifique de l'air*/
           let z=-Math.log(pression/p)*cp*temperature*2/7/g;
-          return(z)
+          return(parseFloat((z).toFixed(1)));
         }
         this.updateCapteurs = () => {
             let newTemp = {

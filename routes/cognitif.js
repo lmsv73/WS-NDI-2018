@@ -6,6 +6,7 @@ var url = 'mongodb://localhost:27017';
 
 router.post('/', function(req, res, next){
     let note=(req.body.nbTouch-req.body.nbEchec)*5/req.body.duration;
+    console.log(req.body);
     note=Math.min(20,note);
     note=Math.max(0,note);
     let insert = {
@@ -17,7 +18,7 @@ router.post('/', function(req, res, next){
     }
     MongoClient.connect(url, (err, client) => {
         let db = client.db('night_2018');
-        db.collection('humidity').insertOne(insert).then(() => {
+        db.collection('cognitif').insertOne(insert).then(() => {
             res.send(note.toFixed(2));
         })
     });

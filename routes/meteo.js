@@ -39,7 +39,7 @@ function tempwebhook(req, res, next){
         db.collection('temp').find({}).sort({date: -1}).limit(1).toArray((err, result) => {
             client.close();
             res.json({
-                "fulfillmentText": ""+(result[0].temp-273.15)
+                "fulfillmentText": "C’est la météo, la météo de Toobo. Aujourd’hui...Soleil !!!! Lumière !!! Vie !! Fleurs… Ce que je ne verrai jamais :( Il fait "+(result[0].temp-273.15).toFixed(2)+" °C"
             });
         });
     })

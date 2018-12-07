@@ -39,7 +39,7 @@ function tempwebhook(req, res, next){
         db.collection('temp').find({}).sort({date: -1}).limit(1).toArray((err, result) => {
             client.close();
             res.json({
-                "fulfillmentText": ""+result.temp
+                "fulfillmentText": ""+result[0].temp
             });
         });
     })

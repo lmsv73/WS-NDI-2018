@@ -8,7 +8,13 @@ var cardiacSystem = require('./routes/cardiacSystem');
 // var mongoose = require('mongoose');
 var cors = require('cors');
 
+var Capteur = require('./services/capteur/capteur');
+
+var url = 'mongodb://localhost:27017';
+
 var app = express();
+
+var capteur = new Capteur(url);
 
 var meteoRoute = require('./routes/meteo');
 

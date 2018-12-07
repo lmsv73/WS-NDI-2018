@@ -24,14 +24,14 @@ var insertDocuments = function(db, callback) {
     var collection = db.collection('logbook');
     // Insert some documents
     collection.insert({
-        title:'Insertion',
-        description: 'Une insertion',
-        user: 'Antoine',
+        title: req.body.title,
+        description: req.body.desc,
+        user: 'Explorateur',
         date: date,
     });
 };
 
-router.get('/store', insertDoc);
+router.post('/store', insertDoc);
 router.get('/:nb', getAll);
 router.get('/', getAllBis);
 
